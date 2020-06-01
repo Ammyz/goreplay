@@ -35,36 +35,6 @@ type ESRequestResponse struct {
 	Timestamp            time.Time
 }
 
-// Parse ElasticSearch URI
-//
-// Proper format is: scheme://[userinfo@]host/index_name
-// userinfo is: user[:password]
-// net/url.Parse() does not fail if scheme is not provided but actualy does not
-// handle URI properly.
-// So we must 'validate' URI format to match requirements to use net/url.Parse()
-func parseURI(URI string) (err error, index string) {
-
-	parsedUrl, parseErr := url.Parse(URI)
-
-	if parseErr != nil {
-		err = new(ESUriErorr)
-		return
-	}
-
-	//	check URL validity by extracting host and undex values.
-	host := parsedUrl.Host
-	urlPathParts := strings.Split(parsedUrl.Path, "/")
-	index = urlPathParts[len(urlPathParts)-1]
-
-	// force index specification in uri : ie no implicit index
-	if host == "" || index == "" {
-		err = new(ESUriErorr)
-	}
-
-	return
-}
-
-
 func (p *ESPlugin) Init(URI string) {
 	p.Url = URI
 	log.Println("Initialized Elasticsearch Plugin")
