@@ -1,10 +1,14 @@
 package main
 
 import (
-	"context"
+	"encoding/json"
 	"log"
+	"net/url"
+	"strings"
 	"time"
+
 	"github.com/buger/goreplay/proto"
+
 	"github.com/olivere/elastic"
 )
 
